@@ -29,3 +29,13 @@
     font-size: 16px;
   }
 }
+.entries{
+  margin-top: 20px;
+  border: 2px solid var(--border);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 15px;
+  font-weight: bold;
+  color: #aa3bff;
+  cursor: pointer;
+}
