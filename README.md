@@ -1,1 +1,1 @@
-# Gym-Planner
+# React + TypeScript + Vite
