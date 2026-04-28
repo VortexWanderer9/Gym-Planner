@@ -11,6 +11,36 @@
       const [height, setHeight] = useState<number | "">("");
       const [goal, setGoal] = useState<Goal>("Maintain");
       const [result, setResult] = useState<String>("");
+
+      const calculate = () => {
+        if(!age || !weight || !height){
+          alert("Please fill all the fields");
+          return;
+        }
+
+        let bmr = 0;
+        if (age && weight && height) {
+          bmr = 10 * weight + 6.25 * height - 5 * age + 5; 
+          console.log(bmr);
+        }
+
+      let calories = 0;
+      if (goal === "Gain") {
+        calories = bmr + 500; 
+      } else if (goal === "Lose") {
+        calories = bmr - 500; 
+      } else {
+        calories = bmr; 
+      }
+
+      let protein = weight * 1.6;
+      let carbs = (calories - protein * 4) * 0.5 / 4; 
+      let fats = (calories - protein * 4) * 0.5 / 9;
+
+      setResult(`To ${goal.toLowerCase()} weight, you need approximately ${calories.toFixed(0)} calories per day.`);
+      setResult(prev => `${prev}\nProtein: ${protein.toFixed(0)}g\nCarbs: ${carbs.toFixed(0)}g\nFats: ${fats.toFixed(0)}g`);
+
+      }
   
       useEffect(() => {
         setShow(true);
@@ -41,35 +71,79 @@
             show ? "opacity-100" : ""
           }`}>
              {/* Heading content */}
-      <div  className="relative z-10 flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold text-gray-800 text-center mb-4">Welcome to Calorie Calculator</h1>
+      <div  className="relative z-10 p-4 flex flex-col items-center justify-center gap-2">
+        <h1 className="text-4xl sm:text-3xl font-bold text-gray-800 text-center mt-4">Welcome to Calorie Calculator</h1>
         <p className="text-lg text-gray-600 text-center">Let’s build your personalized nutrition plan with our easy-to-use calculator.</p>
         <p className="font-mono text-gray-600 text-center mt-2">Get started by entering your details below.</p>
         <div className='flex gap-3 items-center animate-pulse' >
           <h2 className='entries'>Age</h2>
-          <h2 className='entries'>Height</h2>
-          <h2 className='entries'>Workout days</h2>
-          <h2 className='entries'>Weight</h2>
+          <h2 className='entries'>Height(cm)</h2>
+          <h2 className='entries'>Goal</h2>
+          <h2 className='entries'>Weight(kg)</h2>
+      </div>
+      <div className='mt-2 animate-bounce'>
+        <img src="arrow.svg" height={20} width={40} alt="arrow" />
       </div>
       </div>
        {/* skeleton loaders:*/}
-        <div className='flex items-center justify-center mt-10'>
-           <div className="w-full max-w-sm rounded-md">
-  <div className="flex animate-pulse space-x-4">
-    <div className="size-10 rounded-full bg-gray-200"></div>
-    <div className="flex-1 space-y-6 py-1">
-      <div className="h-2 rounded bg-gray-200"></div>
-      <div className="space-y-3">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 h-2 rounded bg-gray-200"></div>
-          <div className="col-span-1 h-2 rounded bg-gray-200"></div>
-        </div>
-        <div className="h-2 rounded bg-gray-200"></div>
-      </div>
-    </div>
-  </div>
-</div>
-        </div>
+        {/* Inputs */}
+          <div className='w-full p-6 relative  z-20'>
+            <h2>Nutrition Calculator</h2>
+            <div className='flex flex-col gap-2'>
+              <div className='flex flex-col'>
+              <label htmlFor="weight">Weight(kg)</label>
+              <input type="text"
+               id="weight"
+                value={weight}
+                 onChange={(e) => setWeight(Number(e.target.value))} 
+                 className='border outline-none px-2 py-1'
+                 />
+            </div>
+
+            <div className='flex flex-col'>
+              <label htmlFor="age">Age</label>
+              <input type="text"
+               id="age"
+                value={age}
+                 onChange={(e) => setAge(Number(e.target.value))} 
+                 className='border outline-none px-2 py-1'
+                 />
+            </div>
+
+            <div className='flex flex-col'>
+              <label htmlFor="height">Height(cm)</label>
+              <input type="text"
+               id="height"
+                value={height}
+                 onChange={(e) => setHeight(Number(e.target.value))} 
+                 className='border outline-none px-2 py-1'
+                 />
+            </div>
+            
+            <div className='flex flex-col'>
+               <label htmlFor="goal">Goal</label>
+                  <select
+          value={goal}
+          onChange={(e) => setGoal(e.target.value as Goal)}
+          className="w-full  border outline-none rounded px-2 py-1"
+        >
+          <option value="Gain">Gain Weight</option>
+          <option value="Maintain">Maintain Weight</option>
+          <option value="Lose">Lose Weight</option>
+        </select>
+            </div>
+
+            <div className='flex flex-col'>
+              <button onClick={calculate} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 cursor-pointer">
+                Calculate
+              </button>
+            </div>
+            </div>
+            <div className='h-100'>
+              <pre className='whitespace-pre-wrap mt-4 text-gray-700'>{result}</pre>
+            </div>
+
+          </div>
     </div>
     </div>
       )
