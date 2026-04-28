@@ -1,9 +1,17 @@
     import './App.css'
     import { useState, useEffect } from 'react';
 
+    type Goal = "Gain" | "Lose" | "Maintain";
+
+
     function App() {
       const [show, setShow] = useState(false);
-
+      const [age, setAge] = useState<number | "">("");
+      const [weight, setWeight] = useState<number | "">("");
+      const [height, setHeight] = useState<number | "">("");
+      const [goal, setGoal] = useState<Goal>("Maintain");
+      const [result, setResult] = useState<String>("");
+  
       useEffect(() => {
         setShow(true);
       }, []);
